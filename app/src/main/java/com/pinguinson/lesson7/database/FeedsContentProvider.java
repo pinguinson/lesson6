@@ -23,7 +23,7 @@ public class FeedsContentProvider extends ContentProvider {
     private static final int ENTRY = 2;
     private static final int FEEDS = 3;
 
-    private static final String AUTHORITY = "ru.ifmo.mobdev.rss";
+    private static final String AUTHORITY = "com.pinguinson.lesson7";
     private static final String PATH_ENTRIES = "FeedEntries";
 
     private static final String PATH_FEEDS = "Feeds";
@@ -86,8 +86,8 @@ public class FeedsContentProvider extends ContentProvider {
                 id = db.insert(FeedsTable.TABLE_NAME, null, contentValues);
                 break;
             case ENTRY:
-                contentValues.put(EntriesTable.ENTRY_FEED_ID_COLUMN, uri.getLastPathSegment());
-                id = db.insert(EntriesTable.TABLE_NAME, null, contentValues);
+                contentValues.put(ArticlesTable.ENTRY_FEED_ID_COLUMN, uri.getLastPathSegment());
+                id = db.insert(ArticlesTable.TABLE_NAME, null, contentValues);
                 break;
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
@@ -102,7 +102,7 @@ public class FeedsContentProvider extends ContentProvider {
         int removed;
         switch (uriMatcher.match(uri)) {
             case ENTRIES:
-                removed = db.delete(EntriesTable.TABLE_NAME, selection, selectionArgs);
+                removed = db.delete(ArticlesTable.TABLE_NAME, selection, selectionArgs);
                 break;
             case FEEDS:
                 removed = db.delete(FeedsTable.TABLE_NAME, selection, selectionArgs);
@@ -118,9 +118,9 @@ public class FeedsContentProvider extends ContentProvider {
             case ENTRY:
                 String feedId = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    removed = db.delete(EntriesTable.TABLE_NAME, EntriesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId, selectionArgs);
+                    removed = db.delete(ArticlesTable.TABLE_NAME, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId, selectionArgs);
                 } else {
-                    removed = db.delete(EntriesTable.TABLE_NAME, EntriesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId + " and " + selection, selectionArgs);
+                    removed = db.delete(ArticlesTable.TABLE_NAME, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId + " and " + selection, selectionArgs);
                 }
                 break;
             default:
@@ -149,9 +149,9 @@ public class FeedsContentProvider extends ContentProvider {
             case ENTRY:
                 String feedId = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    updated = db.update(EntriesTable.TABLE_NAME, contentValues, EntriesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId, selectionArgs);
+                    updated = db.update(ArticlesTable.TABLE_NAME, contentValues, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId, selectionArgs);
                 } else {
-                    updated = db.update(EntriesTable.TABLE_NAME, contentValues, EntriesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId + " and " + selection, selectionArgs);
+                    updated = db.update(ArticlesTable.TABLE_NAME, contentValues, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + feedId + " and " + selection, selectionArgs);
                 }
                 break;
             default:

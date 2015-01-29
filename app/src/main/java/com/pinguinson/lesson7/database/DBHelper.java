@@ -20,12 +20,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("PRAGMA foreign_keys=ON;");
         FeedsTable.onCreate(db);
-        EntriesTable.onCreate(db);
+        ArticlesTable.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         FeedsTable.onUpgrade(db, oldVersion, newVersion);
-        EntriesTable.onUpgrade(db, oldVersion, newVersion);
+        ArticlesTable.onUpgrade(db, oldVersion, newVersion);
     }
 }

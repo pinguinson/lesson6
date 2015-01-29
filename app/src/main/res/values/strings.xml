@@ -4,5 +4,10 @@
     <string name="app_name">RSS Reader</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_add">Add feed</string>
+    <string name="channel_name">Channel name</string>
+    <string name="channel_url">Channel address</string>
+    <string name="article_default_title">Lorem ipsum dolor sit amet</string>
+    <string name="article_default_description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="article_default_date">Wed, 28 Jan 2015 15:43:12 GMT</string>
 
 </resources>
