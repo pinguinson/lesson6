@@ -7,14 +7,8 @@ import java.util.ArrayList;
  */
 public class RSSFeed {
 
-    private String name;
     private String url;
     private ArrayList<RSSArticle> articles;
-
-    public RSSFeed(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
 
     public RSSFeed(String url, ArrayList<RSSArticle> articles) {
         this.url = url;
@@ -23,13 +17,6 @@ public class RSSFeed {
 
     public RSSFeed(String url) {
         this.url = url;
-    }
-
-    public void setArticles(ArrayList<RSSArticle> articles) {
-        this.articles = articles;
-    }
-    public String getName() {
-        return name;
     }
 
     public String getUrl() {

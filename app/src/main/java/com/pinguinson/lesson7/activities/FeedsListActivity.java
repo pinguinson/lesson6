@@ -1,10 +1,12 @@
 package com.pinguinson.lesson7.activities;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -23,19 +25,19 @@ import android.widget.Toast;
 
 import com.pinguinson.lesson7.R;
 import com.pinguinson.lesson7.database.ArticlesTable;
-import com.pinguinson.lesson7.loading.RSSLoadResultReceiver;
-import com.pinguinson.lesson7.loading.RSSPullService;
 import com.pinguinson.lesson7.database.FeedsContentProvider;
 import com.pinguinson.lesson7.database.FeedsTable;
+import com.pinguinson.lesson7.loading.RSSLoadResultReceiver;
+import com.pinguinson.lesson7.loading.RSSPullService;
 
 
 /**
  * Created by pinguinson on 28.01.2015.
  */
-public class FeedsListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, AddFeedDialog.OnCompleteListener {
-    private ListView view;
-    protected SimpleCursorAdapter dataAdapter;
+public class FeedsListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnCompleteListener {
     private static ContentResolver resolver;
+    protected SimpleCursorAdapter dataAdapter;
+    private ListView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +62,7 @@ public class FeedsListActivity extends ActionBarActivity implements LoaderManage
         view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long id) {
-                Uri feedsUri = Uri.parse(FeedsContentProvider.CONTENT_URI_FEEDS.toString() + "/" + id);
-                resolver.delete(FeedsContentProvider.CONTENT_URI_ENTRIES, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + id, null);
-                resolver.delete(feedsUri, null, null);
-                dataAdapter.changeCursor(resolver.query(FeedsContentProvider.CONTENT_URI_FEEDS, null, null, null, null));
-                dataAdapter.notifyDataSetChanged();
+                showRemoveDialog(id);
                 return true;
             }
         });
@@ -89,7 +87,7 @@ public class FeedsListActivity extends ActionBarActivity implements LoaderManage
     }
 
 
-    private long insertFeed(String name, String url){
+    private long insertFeed(String name, String url) {
         ContentValues values = new ContentValues();
         values.put(FeedsTable.FEED_TITLE_COLUMN, name);
         values.put(FeedsTable.FEED_URL_COLUMN, url);
@@ -119,6 +117,33 @@ public class FeedsListActivity extends ActionBarActivity implements LoaderManage
         return true;
     }
 
+    public void showRemoveDialog(final long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Remove RSS feed");
+
+        builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                Uri feedsUri = Uri.parse(FeedsContentProvider.CONTENT_URI_FEEDS.toString() + "/" + id);
+                resolver.delete(FeedsContentProvider.CONTENT_URI_ENTRIES, ArticlesTable.ENTRY_FEED_ID_COLUMN + "=" + id, null);
+                resolver.delete(feedsUri, null, null);
+                dataAdapter.changeCursor(resolver.query(FeedsContentProvider.CONTENT_URI_FEEDS, null, null, null, null));
+                dataAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
@@ -141,7 +166,7 @@ public class FeedsListActivity extends ActionBarActivity implements LoaderManage
     }
 
     @Override
-    public void onComplete(String name, String url) {
+    public void onCompleteAdding(String name, String url) {
         long id = insertFeed(name, url);
         Intent intent = new Intent(this, RSSPullService.class);
         intent.putExtra("feedUrl", url);

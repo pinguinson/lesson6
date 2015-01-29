@@ -81,9 +81,6 @@ public class RSSHandler extends DefaultHandler {
         } catch (ParserConfigurationException e) {
             Log.e("Parsing error", e.toString());
         }
-        for (RSSArticle article : articles) {
-            Log.d("THIS IS ENTRY URL: " + article.getUrl(), "");
-        }
         return articles;
     }
 }

@@ -39,33 +39,29 @@ public class AddFeedDialog extends DialogFragment {
         final EditText feedURL = (EditText) modifiedView.findViewById(R.id.add_url);
 
 
-        builder.setView(modifiedView)
-                .setTitle("Add new RSS feed")
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String name = feedName.getText().toString();
-                        String url = feedURL.getText().toString();
-                        if (name.trim().equals("")) {
-                            Toast.makeText(getActivity().getBaseContext(), "Please enter feed title", Toast.LENGTH_SHORT).show();
-                        } else if (url.trim().equals("")) {
-                            Toast.makeText(getActivity().getBaseContext(), "Please enter feed URL", Toast.LENGTH_SHORT).show();
-                        } else {
-                            onCompleteListener.onComplete(name, url);
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        }
+        builder.setView(modifiedView);
+        builder.setTitle("Add new RSS feed");
 
-                );
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                String name = feedName.getText().toString();
+                String url = feedURL.getText().toString();
+                if (name.trim().equals("")) {
+                    Toast.makeText(getActivity().getBaseContext(), "Please enter feed title", Toast.LENGTH_SHORT).show();
+                } else if (url.trim().equals("")) {
+                    Toast.makeText(getActivity().getBaseContext(), "Please enter feed URL", Toast.LENGTH_SHORT).show();
+                } else {
+                    onCompleteListener.onCompleteAdding(name, url);
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
         return builder.create();
-    }
-
-
-    public static interface OnCompleteListener {
-        public abstract void onComplete(String name, String url);
     }
 }

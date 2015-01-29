@@ -10,7 +10,7 @@
     tools:context=".LoaderActivity">
 
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.pinguinson.lesson7.TightSwipe
         android:id="@+id/swipe_feed"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -20,7 +20,7 @@
             android:id="@+id/feed"
             android:layout_width="wrap_content"
             android:layout_height="0dp" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.pinguinson.lesson7.TightSwipe>
 
 </LinearLayout>
 
